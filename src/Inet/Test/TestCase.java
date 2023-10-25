@@ -4,7 +4,11 @@ import Pages.Kassasida;
 import Pages.Kategorisida;
 import Pages.Produktsida;
 import Pages.Startsida;
+import Pages.uiTestingPlayground.LoadDelayPage;
+import Pages.uiTestingPlayground.ProgressBarPage;
+import Pages.uiTestingPlayground.TextInputPage;
 import TestBase.TestBase;
+import com.microsoft.playwright.Page;
 import org.junit.jupiter.api.Test;
 
 import static com.microsoft.playwright.assertions.PlaywrightAssertions.assertThat;
@@ -103,8 +107,6 @@ public class TestCase extends TestBase {
         kassasida.goToCart();
         kassasida.addGiftcard();
         assertThat(kassasida.giftCardPopup).containsText("Lägg till presentkort");
-
-
     }
 
     @Test
@@ -115,10 +117,34 @@ public class TestCase extends TestBase {
         kassasida.addToCart();
         kassasida.goToCart();
         assertThat(kassasida.completePurchase).isVisible();
-
-
-
     }
 
+    @Test
+    public void loadDelayTest() {
+        LoadDelayPage loadDelayPage = new LoadDelayPage(page);
+        loadDelayPage.openPage();
+        loadDelayPage.navigateHomePage();
+        loadDelayPage.navigateLoadDelay();
+        loadDelayPage.clickButton();
+        assertThat(loadDelayPage.loadDelayButton).isVisible();
+    }
+
+    @Test
+    public void textInputTest() {
+        TextInputPage textInputPage = new TextInputPage(page);
+        textInputPage.openPage();
+        textInputPage.setButtonName();
+        textInputPage.clickButton();
+        assertThat(textInputPage.button).containsText("Button name is changed!");
+    }
+
+    @Test
+    public void progressBarTest() {
+        ProgressBarPage progressBarPage = new ProgressBarPage(page);
+        progressBarPage.openPage();
+        progressBarPage.startProgress();
+        progressBarPage.stopProgress();
+        assertThat(progressBarPage.result).containsText("Result: 0");
+    }
 
 }
